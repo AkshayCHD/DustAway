@@ -61,22 +61,9 @@ class SendEther extends Component {
       this.setState({ metamask: false });
       console.log('Error finding web3. Please make sure MetaMask is installed.');
     });
-    const rootRef = firebase.database().ref().child('akshay');
-    const cleanerRef = rootRef.child('points');
     this.setState({
-        firebaseRef: rootRef,
-    });
-    cleanerRef.on('value', snap=> {
-        this.setState({
-            point: snap.val(),
-        });
-        let points = snap.val();
-        let etherAva = points/200;
-        this.setState({
-            ether: etherAva,
-        });
-        
-    });
+      ether: 10, 
+    })
   }
 
   instantiateContract() {
@@ -88,8 +75,11 @@ class SendEther extends Component {
         [instance.state.web3.eth.defaultAccount] = result;
         const auctionContract = contract(GarbageContract);
         auctionContract.setProvider(instance.state.web3.currentProvider);
+        console.log("########");
         auctionContract.deployed().then((cinstance) => {
           contractInstance = cinstance;
+
+          console.log(this.state.web3.eth.accounts[0]);
         });
       }
     });
@@ -107,16 +97,18 @@ class SendEther extends Component {
     let amount = this.state.ether;
 
     amount = amount.toString();
+    amount = parseInt(amount, 10);
     const thisInstance = this;
-    contractInstance.sendEther(
-        thisInstance.state.web3.utils.toWei(amount, 'ether'),
+    
+    console.log(thisInstance.state.web3.eth.defaultAccount);
+    contractInstance.transferFromContract(
+        amount,
       { from: thisInstance.state.web3.eth.defaultAccount },
     ).then((res) => {
       console.log(res);
       if (res) {
         console.log("*****************************");
         console.log(res);
-        this.state.firebaseRef.child('points').set(0);
         thisInstance.setState({ successful: true });
       }
     }).catch((err) => {
@@ -127,14 +119,13 @@ class SendEther extends Component {
   getAmount = (e) => {
     e.preventDefault();
     const thisInstance = this;
-    contractInstance.getAmount.call(
+    contractInstance.getBalance.call(
       { from: thisInstance.state.web3.eth.defaultAccount },
     ).then((res) => {
       console.log(res);
       if (res) {
         console.log("*****************************");
         console.log(res);
-
         thisInstance.setState({ successful: true });
       }
     }).catch((err) => {
@@ -198,6 +189,11 @@ class SendEther extends Component {
                 <Button variant="contained" color="primary" type="submit" className="login_button" >
                   Submit
                 </Button>
+
+                <Button variant="contained" color="primary" onClick={this.getAmount} className="login_button" >
+                  check
+                </Button>
+                
               </center>
             </form>
          

@@ -83,9 +83,12 @@ class AddEther extends Component {
     let amount = parseInt(document.getElementById("amount").value);
     
     amount = amount.toString();
+
+    amount = parseInt(amount, 10);
     const thisInstance = this;
-    contractInstance.addEther(
-      { from: thisInstance.state.web3.eth.defaultAccount, value: thisInstance.state.web3.utils.toWei(amount, 'ether') },
+    contractInstance.buyTokens(
+      amount,
+      { from: thisInstance.state.web3.eth.defaultAccount },
     ).then((res) => {
       console.log(res);
       if (res) {
