@@ -1,0 +1,44 @@
+
+.background_main {
+    background: url("auctionMain.png");
+    height: 100%;
+    background-attachment: fixed; 
+  
+      /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: repeat-y;
+    background-size: cover;
+  }
+  
+  .background_create {
+    background: url("auctionCreate.jpg");
+    height: 100%;
+    background-attachment: fixed; 
+  
+      /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: repeat-y;
+    background-size: cover;
+  }
+  
+  
+  
+  .background_result {
+    background: url("auctionResult.png");
+    
+    height: 100vh;
+    background-attachment: fixed; 
+    background-position: center;
+    background-repeat: repeat-y;
+    background-size: cover;
+  }
+  
+  
+  .background_authorize {
+    background: url("auctionAuthorize.png");
+    height: 100vh;
+    background-attachment: fixed; 
+    background-position: center;
+    background-repeat: repeat-y;
+    background-size: cover;
+  }

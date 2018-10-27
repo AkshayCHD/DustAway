@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="com.github.neopixl:PixlUI-v1.1.0">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/PixlUI-v1.1.0.aar/34424b50c1a74f1572dead824421bfae/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/PixlUI-v1.1.0.aar/34424b50c1a74f1572dead824421bfae/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
