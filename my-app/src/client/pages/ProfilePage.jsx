@@ -15,7 +15,8 @@ import Card from '@material-ui/core/Card';
 import * as firebase from 'firebase';
 import Nav from '../components/Nav';
 import '../../App.css';
-import CleanerList from '../components/CleanerList';
+import CleanerList from '../components/CleanerList'; 
+import axios from 'axios';
 
 const cleaners = [
   {
@@ -25,7 +26,7 @@ const cleaners = [
   },
   {
     name: 'Rahul',
-    points: 500,
+    points: 100,
     Region: 'Pahad',
   },
   {
@@ -45,38 +46,20 @@ class ProfilePage extends Component {
     this.state = {
         point: 20,
         ether: 0.5,
-        cleaners: null,
+        cleaners: [],
     };
   }
 
   componentWillMount() {
-    this.state.cleaners = cleaners;
-    const rootRef = firebase.database().ref().child('akshay');
-    const cleanerRef = rootRef.child('points');
-    cleanerRef.on('value', snap=> {
-
-        this.state.cleaners = cleaners;
-        this.setState({
-            point: snap.val(),
-        });
-        let p = snap.val();
-        let etherAva = p/200;
-        let akshay = {
-          name: 'Akshay',
-          points: p,
-          Region: 'Roorkee',
-        };
-        this.state.cleaners.push(akshay);
-        this.state.cleaners.sort(function(a, b){
-          if(a.points < b.points) return 1;
-          if(a.points > b.points) return -1;
-          return 0;
-        })
-        this.setState({
-            ether: etherAva,
-        });
-        
+    //this.state.cleaners = cleaners;
+    setInterval(() => {
+      axios.get('https://pechackathon.herokuapp.com/api/')
+    .then(res => {
+      this.setState({cleaners : res.data});
+      console.log(res.data);
     });
+    }, 1000)
+  //  console.log(this.state.cleaners);
   }
 
 

@@ -33,11 +33,11 @@ class CleanerDetails extends Component {
                 </Typography>
 
                 <Typography variant="headline" gutterBottom>
-                    Points: {this.props.cleaner.points}
+                    Points: {this.props.cleaner.score}
                 </Typography>
 
                 <Typography variant="headline" gutterBottom>
-                    Region: {this.props.cleaner.Region}
+                    Region: {this.props.cleaner.region}
                 </Typography>
               </Paper>
             </Grid>
