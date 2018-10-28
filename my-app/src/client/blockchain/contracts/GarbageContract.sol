@@ -16,9 +16,9 @@ contract GarbageContract {
         tokenPrice = _tokenPrice;
     }
 
-    function transferMoney(uint _numberOfTokens) public returns(bool){
+    function transferMoney(uint _numberOfTokens) public returns(uint){
         tokenContract.assignAmount(msg.sender, this, _numberOfTokens);
-        return true;
+        return tokenContract.balanceOf(msg.sender);
     }
 
     function transferFromContract(uint _value) public returns(bool){

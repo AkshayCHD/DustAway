@@ -42,6 +42,7 @@ class SendEther extends Component {
       successful: false,
       point: 20,
       ether: 0.5,
+      GarCoins: 0,
       firebaseRef: null,
     }
     this.handleChange = this.handleChange.bind(this);
@@ -91,6 +92,20 @@ class SendEther extends Component {
         console.log("########");
         auctionContract.deployed().then((cinstance) => {
           contractInstance = cinstance;
+          const thisInstance = this;
+    
+          contractInstance.getBalance.call(
+            { from: thisInstance.state.web3.eth.defaultAccount },
+          ).then((res) => {
+            console.log(res[0]);
+            if (res) {
+              console.log("*****************************");
+              console.log(res);
+              this.setState({GarCoins: res});
+            }
+          }).catch((err) => {
+            console.log(err);
+          });       
         });
       }
     });
@@ -127,14 +142,52 @@ class SendEther extends Component {
 
   getAmount = (e) => {
     e.preventDefault();
+
+    let amount = this.state.ether;
+    amount = Math.floor(amount/10); 
     const thisInstance = this;
     contractInstance.getBalance.call(
       { from: thisInstance.state.web3.eth.defaultAccount },
     ).then((res) => {
-      console.log(res);
+      console.log(res[0]);
       if (res) {
         console.log("*****************************");
         console.log(res);
+        thisInstance.setState({ successful: true });
+      }
+    }).catch((err) => {
+      console.log(err);
+    });
+  }
+
+  ReedeemPoints = (e) => {
+    e.preventDefault();
+
+    let amount = this.state.ether;
+    amount = Math.floor(amount/10); 
+    const thisInstance = this;
+    contractInstance.transferMoney(
+        amount,
+      { from: thisInstance.state.web3.eth.defaultAccount },
+    ).then((res) => {
+      console.log(res[0]);
+      if (res) {
+        console.log("*****************************");
+        console.log(res);
+
+        axios.get('https://pechackathon.herokuapp.com/api/scoreReset/1/');
+        contractInstance.getBalance.call(
+          { from: thisInstance.state.web3.eth.defaultAccount },
+        ).then((res) => {
+          console.log(res[0]);
+          if (res) {
+            console.log("*****************************");
+            console.log(res);
+            this.setState({GarCoins: res});
+          }
+        }).catch((err) => {
+          console.log(err);
+        });       
         thisInstance.setState({ successful: true });
       }
     }).catch((err) => {
@@ -162,47 +215,62 @@ class SendEther extends Component {
         <center>
           <Paper className="container" elevation={4}>
             <form noValidate autoComplete="off" onSubmit={this.formSubmit}>
-            <Grid container justify="center" spacing={24}>
-            <Grid item >
-              <Paper style={{ height: 200, width: 200, padding: 35 }} elevation={4}>
-                <center>
-                  <CountUp
-                    className="count-animation"
-                    start={1000}
-                    end={this.state.ether * 15}
-                    duration={2.75}
-                    useEasing
-                  />
-                  <p>Rupees</p>
-                </center>
-              </Paper>
-            </Grid>
-            <Grid item >
-              <Paper style={{ height: 200, width: 200, padding: 35 }} elevation={4}>
-                <center>
-                  <CountUp
-                    className="count-animation"
-                    start={1000}
-                    end={this.state.ether}
-                    duration={2.75}
-                    useEasing
-                  />
-                  <p>Points</p>
-                </center>
-              </Paper>
-            </Grid>
+            <Grid container justify="center" spacing={24} >
+              <Grid item sm = {3}>
+                <Paper style={{ height: 200, width: 200, padding: 35 }} elevation={4}>
+                  <center>
+                    <CountUp
+                      className="count-animation"
+                      start={1000}
+                      end={this.state.ether * 15}
+                      duration={2.75}
+                      useEasing
+                    />
+                    <p style={{color: "#000000",marginTop:"-2px"}}>Rupees</p>
+                  </center>
+                </Paper>
+              </Grid>
+              <Grid item item sm = {3}>
+                <Paper style={{ height: 200, width: 200, padding: 35 }} elevation={4}>
+                  <center>
+                    <CountUp
+                      className="count-animation"
+                      start={1000}
+                      end={this.state.ether}
+                      duration={2.75}
+                      useEasing
+                    />
+                    <p style={{color: "#000000",marginTop:"-2px"}}>Points</p>
+                  </center>
+                </Paper>
+              </Grid>
+              
+              <Grid item item sm = {3}>
+                <Paper style={{ height: 200, width: 200, padding: 35 }} elevation={4}>
+                  <center>
+                    <CountUp
+                      className="count-animation"
+                      start={1000}
+                      end={this.state.GarCoins}
+                      duration={2.75}
+                      useEasing
+                    />
+                    <p style={{color: "#000000",marginTop:"-2px"}}>GarCoins</p>
+                  </center>
+                </Paper>
+              </Grid>
           </Grid>
           <br />
           <br />
               <center>
                 <Button variant="contained" color="primary" type="submit" className="login_button" >
-                  Submit
+                  Reedeem as Ether
                 </Button>
 
-                <Button variant="contained" color="primary" onClick={this.getAmount} className="login_button" >
-                  check
+                <Button variant="contained" color="primary" onClick={this.ReedeemPoints} className="login_button" >
+                  Reedeem as GarCoin
                 </Button>
-                
+
               </center>
             </form>
          
