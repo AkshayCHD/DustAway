@@ -1,4 +1,4 @@
-# BlockDust
+# DustAway
 
 The project has 2 parts 
 1) The android application
