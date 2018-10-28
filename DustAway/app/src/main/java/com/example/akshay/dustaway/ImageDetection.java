@@ -56,6 +56,7 @@ public class ImageDetection extends AppCompatActivity {
     public Uri ImageUri;
     Bitmap mBitmap;
     ImageView imageView;
+    ByteArrayInputStream inputStream;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +91,7 @@ public class ImageDetection extends AppCompatActivity {
         //Convert image to stream
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         mBitmap.compress(Bitmap.CompressFormat.JPEG,100,outputStream);
-        final ByteArrayInputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray());
+        inputStream = new ByteArrayInputStream(outputStream.toByteArray());
 
         btnProcess.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -158,6 +159,9 @@ public class ImageDetection extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            mBitmap.compress(Bitmap.CompressFormat.JPEG,100,outputStream);
+            inputStream = new ByteArrayInputStream(outputStream.toByteArray());
         }
     }
 }

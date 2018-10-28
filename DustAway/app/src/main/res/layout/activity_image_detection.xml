@@ -13,7 +13,8 @@ tools:context="com.example.akshay.dustaway.ImageDetection">
 <ImageView
     android:id="@+id/imageView"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" />
+    android:layout_height="800px"
+    android:layout_marginTop="250px"/>
 
 
 <android.support.design.widget.FloatingActionButton
