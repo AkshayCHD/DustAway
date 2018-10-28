@@ -1,5 +1,6 @@
 package com.example.akshay.dustaway;
 
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +17,7 @@ import android.widget.Chronometer;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.telephony.gsm.SmsManager;
 
 import com.google.android.gms.location.DetectedActivity;
 import com.google.firebase.database.DatabaseReference;
@@ -131,7 +133,8 @@ public class cycleActivity extends AppCompatActivity implements TextToSpeech.OnI
 
         if(DetectedActivity.STILL == type )
         {
-            long start = System.currentTimeMillis();
+            if(start == 0)
+                start = System.currentTimeMillis();
         }
 
         else
@@ -141,6 +144,7 @@ public class cycleActivity extends AppCompatActivity implements TextToSpeech.OnI
             int minutes = (int) (timeElapsed - hours * 3600000) / 60000;
             int seconds = (int) (timeElapsed - hours * 3600000 - minutes * 60000) / 1000;
             long runTime = System.currentTimeMillis() - start;
+            start = 0;
             hours = (int) (runTime / 3600000);
             minutes = (int) (runTime - hours * 3600000) / 60000;
             seconds = (int) (runTime - hours * 3600000 - minutes * 60000) / 1000;
@@ -184,12 +188,13 @@ public class cycleActivity extends AppCompatActivity implements TextToSpeech.OnI
 
     private void stopTracking() {
         runTime += System.currentTimeMillis() - start;
-        mNotifyDatabaseReference.setValue(700);
-        Toast.makeText(this, "Congrats you earned 100 points.", Toast.LENGTH_LONG).show();
+        mNotifyDatabaseReference.setValue(300);
+        Toast.makeText(this, "Congrats you earned 300 points.", Toast.LENGTH_LONG).show();
         int hours = (int) (runTime / 3600000);
         int minutes = (int) (runTime - hours * 3600000) / 60000;
         int seconds = (int) (runTime - hours * 3600000 - minutes * 60000) / 1000;
         String s = "You are still for " + Integer.toString(hours) + " hours " + Integer.toString(minutes) + " minutes and " +  Integer.toString(seconds) + " seconds.";
+        Toast.makeText(this, s, Toast.LENGTH_LONG).show();
         Intent intent = new Intent(cycleActivity.this, BackgroundDetectedActivitiesService.class);
         stopService(intent);
         tts.speak(s, TextToSpeech.QUEUE_ADD, null);

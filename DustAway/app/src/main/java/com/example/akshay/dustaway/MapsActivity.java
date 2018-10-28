@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -117,6 +118,9 @@ public class MapsActivity extends AppCompatActivity
 
     private Location currLocation;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    public String bestProvider;
+    public LocationManager locationManager;
+    public Criteria criteria;
 
 
 
@@ -130,27 +134,27 @@ public class MapsActivity extends AppCompatActivity
             mCameraPosition = savedInstanceState.getParcelable(KEY_CAMERA_POSITION);
         }
 
-        mLatLngList.add(new LatLng(28.5456102, 77.2031102));
+        mLatLngList.add(new LatLng(30.766070, 76.787308));
 
-        mLatLngList.add(new LatLng(28.5425062, 77.269522));
+        mLatLngList.add(new LatLng(30.7669, 76.7856));
 
-        mLatLngList.add(new LatLng(28.546349, 77.273139));
+        mLatLngList.add(new LatLng(30.7645, 76.7843));
 
-        mLatLngList.add(new LatLng(28.546349, 77.273349));
+        mLatLngList.add(new LatLng(30.7663, 76.7834));
 
-        mLatLngList.add(new LatLng(30.9656855, 76.4874576));
+        mLatLngList.add(new LatLng(30.7580, 76.7685));
 
-        mLatLngList.add(new LatLng(30.9667855, 76.4872676));
+        mLatLngList.add(new LatLng(30.7583, 76.7712));
 
         int i=0;
 
         String[] CnameList = new String[6];
-        CnameList[0] = "Amazon";
-        CnameList[1] = "Flipkart";
-        CnameList[2] = "Snapchat";
-        CnameList[3] = "Facebook";
-        CnameList[4] = "Google";
-        CnameList[5] = "Apple";
+        CnameList[0] = "PEC Ground";
+        CnameList[1] = "PEC Market";
+        CnameList[2] = "PGI Ground";
+        CnameList[3] = "PGI";
+        CnameList[4] = "Panjab University";
+        CnameList[5] = "Bhatnagar Hall";
 
         for(LatLng latLng : mLatLngList){
             mMarkerList.add(new ModelMarker(i,CnameList[i],"",latLng));
@@ -220,7 +224,7 @@ public class MapsActivity extends AppCompatActivity
                                 location.getLatitude(), location.getLongitude(), distance);
 
                         Log.i("message", String.valueOf(location.getLatitude()) + " " + String.valueOf(location.getLongitude()));
-                        if (distance[0] / 1000 > 10) {
+                        if (distance[0] / 1000 > 0.5) {
                             //Toast.makeText(getBaseContext(), "Outside" + String.valueOf(distance[0]/1000), Toast.LENGTH_LONG).show();
                         } else {
                             //Toast.makeText(getBaseContext(), "Inside" + String.valueOf(distance[0]/1000), Toast.LENGTH_LONG).show();
@@ -287,6 +291,7 @@ public class MapsActivity extends AppCompatActivity
     /**
      * Gets the current location of the device, and positions the map's camera.
      */
+
     private void getDeviceLocation() {
         /*
          * Get the best and most recent location of the device, which may be null in rare
@@ -300,12 +305,16 @@ public class MapsActivity extends AppCompatActivity
                     public void onComplete(@NonNull Task<Location> task) {
                         if (task.isSuccessful()) {
                             // Set the map's camera position to the current location of the device.
-                            mLastKnownLocation = task.getResult();
+                            //mLastKnownLocation = task.getResult();
+                            if(mLastKnownLocation != null) {
+                                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
+                                        new LatLng(mLastKnownLocation.getLatitude(),
+                                                mLastKnownLocation.getLongitude()), DEFAULT_ZOOM));
+                            }
 
+                            else {
 
-                            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
-                                    new LatLng(mLastKnownLocation.getLatitude(),
-                                            mLastKnownLocation.getLongitude()), DEFAULT_ZOOM));
+                            }
 
                         } else {
                             Log.d(TAG, "Current location is null. Using defaults.");
@@ -439,7 +448,7 @@ public class MapsActivity extends AppCompatActivity
                 currLocation.getLatitude(), currLocation.getLongitude(), dis);
         ModelMarker temp = (ModelMarker) marker.getTag();
         temp.setInRange(false);
-        if (dis[0]/1000 < 10) {
+        if (dis[0]/1000 < 0.5) {
             Toast.makeText(MapsActivity.this, ((ModelMarker) marker.getTag()).getCname(),  Toast.LENGTH_SHORT).show();
             temp.setInRange(true);
 

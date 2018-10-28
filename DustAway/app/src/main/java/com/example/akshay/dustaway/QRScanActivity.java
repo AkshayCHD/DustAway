@@ -10,6 +10,12 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -108,14 +114,44 @@ public class QRScanActivity extends AppCompatActivity {
                 Toast.makeText(this, "Result Not Found", Toast.LENGTH_LONG).show();
             } else {
                 try{
-                    i = Integer.valueOf(result.getContents());
+                    i = Integer.parseInt(result.getContents());
                 }catch(NumberFormatException ex){ // handle your exception
                     i = 0;
                 }
-                    points = i;
                     textViewName.setVisibility(View.VISIBLE);
-                    textViewName.setText("Congratulations you earned " + String.valueOf(i) + " Points");
-                    mNotifyDatabaseReference.setValue(i);
+                    textViewName.setText("Congratulations you earned " + result.getContents() + " Points");
+
+                    RequestQueue queue = Volley.newRequestQueue(this);
+                    String url ="http://pechackathon.herokuapp.com/api/scoreUpdate/1/" +result.getContents() + "/";
+
+                    StringRequest strRequest = new StringRequest(Request.Method.GET, url,
+                            new Response.Listener<String>()
+                            {
+                                @Override
+                                public void onResponse(String response)
+                                {
+                                }
+                            },
+                            new Response.ErrorListener()
+                            {
+                                @Override
+                                public void onErrorResponse(VolleyError error)
+                                {
+                                }
+                            })
+                    {
+                        @Override
+                        protected Map<String, String> getParams()
+                        {
+                            Map<String, String> params = new HashMap<String, String>();
+                            params.put("tag", "test");
+                            return params;
+                        }
+                    };
+
+                    queue.add(strRequest);
+
+                    /*mNotifyDatabaseReference.setValue(i);
                     mNotifyDatabaseReference=mFirebaseDatabase.getReference().child("rahul").child("points");
                     mNotifyDatabaseReference.setValue(i);
                     /*
