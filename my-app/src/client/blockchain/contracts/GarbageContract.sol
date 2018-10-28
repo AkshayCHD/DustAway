@@ -46,7 +46,7 @@ contract GarbageContract {
     function sendEther(uint Samount) public payable {
         tx.origin.transfer(Samount);
         amount -= Samount;
-    }
+    }   
 
     function getAmount() public view returns(uint) {
         return amount;

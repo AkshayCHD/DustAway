@@ -20,7 +20,7 @@ import * as firebase from 'firebase';
 import Nav from '../components/Nav';
 import '../../App.css';
 import GarbageContract from '../blockchain/build/contracts/GarbageContract.json';
-
+import axios from 'axios';
 import getWeb3 from '../utils/getWeb3';
 
 
@@ -63,7 +63,20 @@ class SendEther extends Component {
     });
     this.setState({
       ether: 10, 
-    })
+    });
+    setInterval(() => {
+      axios.get('https://pechackathon.herokuapp.com/api/')
+    .then(res => {
+     // this.setState({cleaners : res.data});
+      res.data.forEach((item, index) => {
+        if(item.name == 'Akshay Kumar')
+        {
+          this.setState({ ether : item.score });
+        }
+      });
+     // console.log(res.data[0].score);
+    });
+    }, 1000)
   }
 
   instantiateContract() {
@@ -78,8 +91,6 @@ class SendEther extends Component {
         console.log("########");
         auctionContract.deployed().then((cinstance) => {
           contractInstance = cinstance;
-
-          console.log(this.state.web3.eth.accounts[0]);
         });
       }
     });
@@ -95,20 +106,18 @@ class SendEther extends Component {
     console.log("entered form submit");
 
     let amount = this.state.ether;
-
+    amount = Math.floor(amount/10);
     amount = amount.toString();
-    amount = parseInt(amount, 10);
     const thisInstance = this;
-    
-    console.log(thisInstance.state.web3.eth.defaultAccount);
-    contractInstance.transferFromContract(
-        amount,
+    contractInstance.sendEther(
+        thisInstance.state.web3.utils.toWei(amount, 'ether'),
       { from: thisInstance.state.web3.eth.defaultAccount },
     ).then((res) => {
       console.log(res);
       if (res) {
         console.log("*****************************");
-        console.log(res);
+        axios.get('https://pechackathon.herokuapp.com/api/scoreReset/1/');
+   
         thisInstance.setState({ successful: true });
       }
     }).catch((err) => {
@@ -160,11 +169,11 @@ class SendEther extends Component {
                   <CountUp
                     className="count-animation"
                     start={1000}
-                    end={this.state.point}
+                    end={this.state.ether * 15}
                     duration={2.75}
                     useEasing
                   />
-                  <p>Points</p>
+                  <p>Rupees</p>
                 </center>
               </Paper>
             </Grid>
@@ -178,7 +187,7 @@ class SendEther extends Component {
                     duration={2.75}
                     useEasing
                   />
-                  <p>Ether</p>
+                  <p>Points</p>
                 </center>
               </Paper>
             </Grid>

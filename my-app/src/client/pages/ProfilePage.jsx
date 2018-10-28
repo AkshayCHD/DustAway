@@ -56,7 +56,7 @@ class ProfilePage extends Component {
       axios.get('https://pechackathon.herokuapp.com/api/')
     .then(res => {
       this.setState({cleaners : res.data});
-      console.log(res.data);
+     // console.log(res.data[0].score);
     });
     }, 1000)
   //  console.log(this.state.cleaners);
