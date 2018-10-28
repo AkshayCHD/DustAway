@@ -1,27 +1,27 @@
-import React from 'react';
-import Drawer from '@material-ui/core/Drawer';
-import Divider from '@material-ui/core/Divider';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import Avatar from '@material-ui/core/Avatar';
-import { withRouter } from 'react-router-dom';
-import HomeIcon from '@material-ui/icons/Home';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import TimelineIcon from '@material-ui/icons/Timeline';
-import AddIcon from '@material-ui/icons/Add';
-import StarIcon from '@material-ui/icons/Stars';
-import SettingsIcon from '@material-ui/icons/Settings';
-import HelpIcon from '@material-ui/icons/Help';
-import FeedbackIcon from '@material-ui/icons/Feedback';
-import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
-import CreditCardIcon from '@material-ui/icons/CreditCard';
+import React from "react";
+import Drawer from "@material-ui/core/Drawer";
+import Divider from "@material-ui/core/Divider";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import Avatar from "@material-ui/core/Avatar";
+import { withRouter } from "react-router-dom";
+import HomeIcon from "@material-ui/icons/Home";
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+import TimelineIcon from "@material-ui/icons/Timeline";
+import AddIcon from "@material-ui/icons/Add";
+import StarIcon from "@material-ui/icons/Stars";
+import SettingsIcon from "@material-ui/icons/Settings";
+import HelpIcon from "@material-ui/icons/Help";
+import FeedbackIcon from "@material-ui/icons/Feedback";
+import AccountBalanceIcon from "@material-ui/icons/AccountBalance";
+import CreditCardIcon from "@material-ui/icons/CreditCard";
 
 class NavDrawer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      loggedIn: false,
+      loggedIn: false
     };
     this.openAdd = this.openAdd.bind(this);
     this.openProfile = this.openProfile.bind(this);
@@ -30,21 +30,20 @@ class NavDrawer extends React.Component {
   }
 
   handleClosing() {
-    this.props.onClose('left', false);
+    this.props.onClose("left", false);
   }
 
   openAdd() {
-    this.props.history.push('/Add');
+    this.props.history.push("/Add");
   }
 
   openSend() {
-    this.props.history.push('/Send');
+    this.props.history.push("/Send");
   }
 
   openProfile() {
-    this.props.history.push('/');
+    this.props.history.push("/Leaderboard");
   }
-
 
   render() {
     return (
@@ -58,13 +57,8 @@ class NavDrawer extends React.Component {
           >
             <div>
               <center>
-                <Avatar
-                  alt="Profile Image"
-                  className="timeline_avatar"
-                />
+                <Avatar alt="Profile Image" className="timeline_avatar" />
               </center>
-
-             
 
               <ListItem button onClick={this.openProfile}>
                 <ListItemIcon>
@@ -85,7 +79,6 @@ class NavDrawer extends React.Component {
                 <ListItemText primary="Transfer Balance" />
               </ListItem>
 
-             
               <ListItem button onClick={this.openAdd}>
                 <ListItemIcon>
                   <Avatar className="yellowAvatar">
@@ -98,7 +91,7 @@ class NavDrawer extends React.Component {
               <Divider />
               <Divider />
 
-              <ListItem button >
+              <ListItem button>
                 <ListItemIcon>
                   <Avatar className="orangeAvatar">
                     <SettingsIcon />
@@ -127,7 +120,7 @@ class NavDrawer extends React.Component {
                 <ListItemText primary="Feedback" />
               </ListItem>
 
-              <ListItem button >
+              <ListItem button>
                 <ListItemIcon>
                   <Avatar className="greenAvatar">
                     <CreditCardIcon />

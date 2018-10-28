@@ -1,0 +1,46 @@
+.back {
+  width: 100%;
+  height: 950px;
+  background-image: url("./bg-image.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+.Logo {
+  margin-top: -100%;
+}
+button {
+  background-color: #e6e6e6;
+  border: none;
+  color: black;
+  padding: 20px 100px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 30px;
+  cursor: pointer;
+  transform: scale(1);
+  transform: translate(0px, 5px);
+  transition: all 0.4s ease;
+  font-family: "Roboto", sans-serif;
+  letter-spacing: 0.2em;
+}
+button:hover {
+  background-color: #b041f5;
+  color: white;
+  transition: all 0.4s ease;
+  transform: scale(1.1) perspective(1px);
+}
+h1 {
+  color: white;
+  font-family: Lucida Console, Courier, monospace;
+  font-size: 50px;
+  letter-spacing: 0.1em;
+}
+p {
+  color: white;
+  font-family: Lucida Console, Courier, monospace;
+  font-size: 30px;
+}
